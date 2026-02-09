@@ -30,7 +30,7 @@ function ReclamiPage() {
     setError(null);
     try {
       const res = await fetch(
-        `https://percipio.onrender.com/api/reclami/search?q=${encodeURIComponent(
+        `https://percipio001.onrender.com/api/reclami/search?q=${encodeURIComponent(
           query
         )}`
       );
