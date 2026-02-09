@@ -17,6 +17,23 @@ function ReclamiPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+
+  const handleView = (row) => {
+    console.log("Visualizza dettaglio:", row);
+    // qui apri un modal o una pagina dettaglio
+  };
+
+  const handleDownload = (row) => {
+    console.log("Download:", row);
+    // qui avvii il download del documento
+  };
+
+  const handleDelete = (row) => {
+    console.log("Cancellazione:", row);
+    // qui mostri un alert di conferma e cancelli la riga
+  };
+
+
   // Definizione colonne DataGrid
   const columns = [
     { field: "NumReclamo", headerName: "Num Reclamo", width: 150 },
