@@ -7,6 +7,9 @@ import {
   Typography,
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import DownloadIcon from '@mui/icons-material/Download';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 function ReclamiPage() {
   const [query, setQuery] = useState("");
@@ -17,11 +20,51 @@ function ReclamiPage() {
   // Definizione colonne DataGrid
   const columns = [
     { field: "NumReclamo", headerName: "Num Reclamo", width: 150 },
+    {
+      field: "origine",
+      headerName: "Origine",
+      width: 200,
+      renderCell: (params) => (
+          <div>
+            {params.row.settore}<br />
+            {params.row.soggettoProvenienza}<br />
+            {params.row.tipologiaClaim}
+          </div>
+      )
+    },
     { field: "nome", headerName: "Nome", width: 150 },
     { field: "cognome", headerName: "Cognome", width: 150 },
     { field: "codFiscale", headerName: "Codice Fiscale", width: 160 },
     { field: "ragioneSociale", headerName: "Ragione Sociale", width: 200 },
     { field: "pIVA", headerName: "P. IVA", width: 130 },
+    {
+      field: "actions",
+      headerName: "Azioni",
+      width: 150,
+      sortable: false,
+      filterable: false,
+      renderCell: (params) => (
+        <div style={{ display: "flex", gap: "8px" }}>
+          {/* Visualizzazione dettaglio */}
+          <VisibilityIcon
+            style={{ cursor: "pointer" }}
+            onClick={() => handleView(params.row)}
+          />
+
+          {/* Download */}
+          <DownloadIcon
+            style={{ cursor: "pointer" }}
+            onClick={() => handleDownload(params.row)}
+          />
+
+          {/* Cancellazione */}
+          <DeleteIcon
+            style={{ cursor: "pointer", color: "red" }}
+            onClick={() => handleDelete(params.row)}
+          />
+        </div>
+      )
+    },
   ];
 
   const search = async () => {
@@ -40,6 +83,9 @@ function ReclamiPage() {
       // Trasformo i dati in formato DataGrid
       const rows = json.map((r) => ({
         id: r._id,
+        settore: r.settore || "-",
+        soggettoProvenienza: r.soggettoProvenienza || "-",
+        tipologiaClaim: r.tipologiaClaim || "-",
         NumReclamo: r.NumReclamo,
         nome: r.personaFisica?.[0]?.nome || "-",
         cognome: r.personaFisica?.[0]?.cognome || "-",
@@ -100,6 +146,7 @@ function ReclamiPage() {
           rows={data}
           columns={columns}
           loading={loading}
+          getRowHeight={() => 'auto'}
           initialState={{
           pagination: {
             paginationModel: {
